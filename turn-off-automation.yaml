@@ -1,0 +1,20 @@
+blueprint:
+  name: Turn off all jimmy- ESPHome Devices
+  description: >
+    Finds all switch entities matching `switch.jimmy_*_projectorpoweroff`
+    and toggles them. No configuration needed — just create the automation.
+  domain: automation
+  input: {}
+
+trigger: []  # Trigger this automation manually or call it from another automation
+
+action:
+  - service: switch.toggle
+    target:
+      entity_id: >
+        {{ states.switch
+           | selectattr('entity_id', 'match', 'switch\\.jimmy_.*_projectorpoweroff')
+           | map(attribute='entity_id')
+           | list }}
+
+mode: single
